@@ -122,17 +122,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = {};
             
             for (let [key, value] of formData.entries()) {
-                data[key] = value;
+                data[key] = value.trim();
             }
-    
-            // Get current timestamp in UTC
+
+            // Get current timestamp in IST
             const now = new Date();
+            // Add 5 hours and 30 minutes for IST offset
+            now.setTime(now.getTime() + (5.5 * 60 * 60 * 1000));
             const timestamp = now.toISOString().slice(0, 19).replace('T', ' ');
             data.timestamp = timestamp;
     
             console.log('Submitting data:', data);
     
-            const response = await fetch('https://script.google.com/macros/s/AKfycbxBOm4jkoZNtCnyPsWhxC1coi3oGhiXxvnpmB-g_4qex7a5eG62wwvS8DdODukX0Xg2/exec', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec', {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
@@ -184,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verify spreadsheet setup on page load
     async function verifySpreadsheet() {
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbxBOm4jkoZNtCnyPsWhxC1coi3oGhiXxvnpmB-g_4qex7a5eG62wwvS8DdODukX0Xg2/exec?action=verify', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec?action=verify', {
                 method: 'GET',
                 mode: 'no-cors'
             });
