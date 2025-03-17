@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPOCH 2025 | BMSIT&M AI/ML Hackathon</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500,400&f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="particle-background" id="particles-js"></div>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-item bmsit-logo">
+                    <img src="/Users/gauravnayakk/Desktop/BMSIT.png" alt="BMSIT&M Logo">
+                </div>
+                <div class="institution-name">
+                    <h2><span class="bms-highlight">BMS</span> INSTITUTE OF TECHNOLOGY AND MANAGEMENT</h2>
+                    <p>Autonomous Institute, Affiliated to VTU</p>
+                </div>
+            </div>
+        
+            <div class="event-badge">
+                <div class="badge-content">
+                    <span class="badge-label">EPOCH</span>
+                    <span class="badge-year">2025</span>
+                </div>
+            </div>
+            
+            <h1 class="glitch" data-text="EPOCH">EPOCH</h1>
+            <p class="tagline">INNOVATE • COLLABORATE • COMPETE</p>
+            
+            <div class="event-brief">
+                <div class="department-tag">
+                    Department of Artificial Intelligence & Machine Learning
+                </div>
+                <div class="prize-pool">
+                    <span class="highlight">₹19K+</span> Prize Pool + Career Building Internships
+                </div>
+                <div class="aicte-points-banner">
+                    <i class="fas fa-award"></i>
+                    <span>5 AICTE Activity Points for ALL Participants</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="event-highlights">
+                <div class="highlight-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div class="highlight-content">
+                        <div class="highlight-label">DATE</div>
+                        <div class="highlight-value">March 27, 2025</div>
+                    </div>
+                </div>
+                <div class="highlight-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="highlight-content">
+                        <div class="highlight-label">TIME</div>
+                        <div class="highlight-value">8:00 AM - 8:00 PM</div>
+                    </div>
+                </div>
+                <div class="highlight-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="highlight-content">
+                        <div class="highlight-label">VENUE</div>
+                        <div class="highlight-value">Peter Naur Lab, BSN Block (5th Floor)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deadline-counter">
+                <div class="deadline-label">TIME REMAINING</div>
+                <div id="countdown" class="countdown"></div>
+            </div>
+        </div>
+
+        <!-- Sponsor Section -->
+        <div class="sponsor-section">
+            <h2 class="section-title">IN COLLABORATION WITH</h2>
+            <div class="collaboration-container">
+                <div class="sponsor-block">
+                    <div class="sponsor-logo">
+                        <img src="/Users/gauravnayakk/Desktop/aviratha.png" alt="Sponsor Logo">
+                    </div>
+                    <div class="sponsor-info">
+                        <h3>Technology Partner</h3>
+                        <p>Empowering Innovation in AI/ML</p>
+                    </div>
+                </div>
+        
+                <div class="department-block">
+                    <div class="dept-logo">
+                        <img src="/Users/gauravnayakk/Desktop/arvr.png" alt="AI/ML Department Logo">
+                    </div>
+                    <div class="dept-info">
+                        <h3>AR VR Club</h3>
+                        <p>Department of AI/ML</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- Prize Section -->
+        <div class="prize-section">
+            <h2 class="section-title">PRIZES & REWARDS</h2>
+            <div class="prize-cards">
+                <div class="prize-card second">
+                    <div class="prize-medal"><i class="fas fa-medal"></i></div>
+                    <h3>2nd Prize</h3>
+                    <div class="prize-amount">₹5,000</div>
+                </div>
+                <div class="prize-card first">
+                    <div class="prize-medal"><i class="fas fa-trophy"></i></div>
+                    <h3>1st Prize</h3>
+                    <div class="prize-amount">₹10,000</div>
+                </div>
+                <div class="prize-card third">
+                    <div class="prize-medal"><i class="fas fa-medal"></i></div>
+                    <h3>3rd Prize</h3>
+                    <div class="prize-amount">₹4,000</div>
+                </div>
+            </div>
+            <div class="special-prize">
+                <h3>Special Sponsor Prize</h3>
+                <div class="prize-amount">₹1,000</div>
+                <p>Best Innovation Award</p>
+            </div>
+        </div>
+        
+        <form id="registrationForm" class="registration-form">
+            <div class="form-header">
+                <div class="form-title">REGISTRATION FORM</div>
+                <div class="form-subtitle">EPOCH 2025 • BMSIT&M</div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="section-number">01</span>
+                    <h2>TEAM DETAILS</h2>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="teamName" name="Team Name" required>
+                    <label for="teamName">TEAM NAME</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <select id="teamSize" name="Team Size" required>
+                        <option value="">SELECT TEAM SIZE</option>
+                        <option value="2">2 MEMBERS</option>
+                        <option value="3">3 MEMBERS</option>
+                        <option value="4">4 MEMBERS</option>
+                    </select>
+                    <label for="teamSize">TEAM SIZE</label>
+                    <div class="input-line"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="section-number">02</span>
+                    <h2>TEAM LEADER DETAILS</h2>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="leaderName" name="Team Leader Name" required>
+                    <label for="leaderName">FULL NAME</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="leaderUSN" name="Team Leader USN" required pattern="1BY\d{2}[A-Z]{2}\d{3}">
+                    <label for="leaderUSN">USN</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="leaderEmail" name="Team Leader Email" required>
+                    <label for="leaderEmail">EMAIL ADDRESS</label>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <select id="leaderSemester" name="Team Leader Semester" required>
+                        <option value="">SELECT SEMESTER</option>
+                        <option value="2">2nd Semester</option>
+                        <option value="4">4th Semester</option>
+                        <option value="6">6th Semester</option>
+                        <option value="8">8th Semester</option>
+                    </select>
+                    <label for="leaderSemester">CURRENT SEMESTER</label>
+                    <div class="input-line"></div>
+                </div>
+            </div>
+
+            <!-- Dynamic Team Members Section -->
+            <div id="teamMembersSection"></div>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="section-number">03</span>
+                    <h2>PROJECT DETAILS</h2>
+                </div>
+                <div class="form-group">
+                    <textarea id="problemStatement" name="Problem Statement" required rows="4"></textarea>
+                    <label for="problemStatement">PROBLEM STATEMENT</label>
+                    <div class="input-line"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">REGISTER NOW</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </form>
+
+        <div id="successMessage" class="success-message hidden">
+            <div class="success-icon">✓</div>
+            <div class="success-text">REGISTRATION SUCCESSFUL!</div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
