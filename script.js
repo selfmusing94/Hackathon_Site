@@ -1,88 +1,59 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize particles.js
-    particlesJS('particles-js', {
+    // Particles.js initialization
+    particlesJS("particles-js", {
         particles: {
-            number: {
-                value: 80,
-                density: { enable: true, value_area: 800 }
-            },
-            color: { value: '#00ffff' },
-            shape: { type: 'circle' },
-            opacity: {
-                value: 0.5,
-                random: true
-            },
-            size: {
-                value: 3,
-                random: true
-            },
-            line_linked: {
-                enable: true,
-                distance: 150,
-                color: '#00ffff',
-                opacity: 0.2,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 2,
-                direction: 'none',
-                random: true,
-                straight: false,
-                out_mode: 'out',
-                bounce: false
-            }
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: "#ffffff" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5, random: false },
+            size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
         },
         interactivity: {
-            detect_on: 'canvas',
+            detect_on: "canvas",
             events: {
-                onhover: { enable: true, mode: 'grab' },
-                onclick: { enable: true, mode: 'push' },
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" },
                 resize: true
             }
         },
         retina_detect: true
     });
 
-    // Event Date and Countdown Timer
-    const eventDateTime = new Date('2025-03-27T08:00:00+05:30'); // Event start time in IST
-    const currentDateTime = new Date('2025-03-17 16:44:01'); // Current time from your input
-
+    // Countdown Timer
+    const countDownDate = new Date("March 27, 2025 08:00:00").getTime();
+    
     function updateCountdown() {
-        const now = new Date();
-        const distance = eventDateTime - now;
-
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+        
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById('countdown').innerHTML = `
+        
+        document.getElementById("countdown").innerHTML = `
             <div class="countdown-item">
-                <span class="time-value">${days.toString().padStart(2, '0')}</span>
+                <span class="time-value">${days}</span>
                 <span class="time-label">DAYS</span>
             </div>
             <div class="countdown-item">
-                <span class="time-value">${hours.toString().padStart(2, '0')}</span>
+                <span class="time-value">${hours}</span>
                 <span class="time-label">HOURS</span>
             </div>
             <div class="countdown-item">
-                <span class="time-value">${minutes.toString().padStart(2, '0')}</span>
-                <span class="time-label">MINS</span>
+                <span class="time-value">${minutes}</span>
+                <span class="time-label">MINUTES</span>
             </div>
             <div class="countdown-item">
-                <span class="time-value">${seconds.toString().padStart(2, '0')}</span>
-                <span class="time-label">SECS</span>
+                <span class="time-value">${seconds}</span>
+                <span class="time-label">SECONDS</span>
             </div>
         `;
-
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            document.getElementById('countdown').innerHTML = '<div class="live-badge">EVENT LIVE</div>';
-        }
     }
-
-    const countdownInterval = setInterval(updateCountdown, 1000);
+    
+    setInterval(updateCountdown, 1000);
     updateCountdown();
 
     // Form Handling
@@ -96,10 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (teamSize > 1) {
             for (let i = 2; i <= teamSize; i++) {
                 const memberSection = document.createElement('div');
-                memberSection.className = 'form-section team-member-section';
+                memberSection.className = 'form-section';
                 memberSection.innerHTML = `
                     <div class="section-header">
-                        <span class="section-number">0${i+1}</span>
+                        <span class="section-number">0${i}</span>
                         <h2>TEAM MEMBER ${i}</h2>
                     </div>
                     <div class="form-group">
@@ -137,37 +108,92 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('teamSize').addEventListener('change', adjustTeamFields);
 
+    // Form Submission
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-
+    
+        const submitBtn = form.querySelector('.submit-btn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        submitBtn.disabled = true;
+    
         try {
             const formData = new FormData(form);
-            formData.append('Timestamp', new Date('2025-03-17 16:44:01').toISOString());
-            formData.append('SubmittedBy', 'selfmusing94');
-
-            // Replace with your Google Apps Script URL
-            const response = await fetch('https://script.google.com/macros/s/AKfycbxmKGkRnw8ZWXWEG9DXoi5fMafnltm_-cnapWKRzalZ2PCsS_dlDH3YBUOhg0ILm7JSDQ/exec', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                showSuccess();
-                form.reset();
-            } else {
-                throw new Error('Submission failed');
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
             }
+    
+            // Get current timestamp in UTC
+            const now = new Date();
+            const timestamp = now.toISOString().slice(0, 19).replace('T', ' ');
+            data.timestamp = timestamp;
+    
+            console.log('Submitting data:', data);
+    
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxBOm4jkoZNtCnyPsWhxC1coi3oGhiXxvnpmB-g_4qex7a5eG62wwvS8DdODukX0Xg2/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            console.log('Form submitted at:', timestamp);
+            showSuccess();
+            form.reset();
+            adjustTeamFields();
+            
         } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to submit. Please try again.');
+            console.error('Submission error:', error);
+            showError('Form submission failed. Please try again or contact support.');
+        } finally {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
         }
     });
 
     function showSuccess() {
         const successMessage = document.getElementById('successMessage');
+        successMessage.classList.remove('hidden');
         successMessage.classList.add('show');
         setTimeout(() => {
             successMessage.classList.remove('show');
+            successMessage.classList.add('hidden');
         }, 5000);
     }
+
+    function showError(message) {
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message show';
+        errorMessage.innerHTML = `
+            <div class="error-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        document.body.appendChild(errorMessage);
+        
+        setTimeout(() => {
+            errorMessage.remove();
+        }, 5000);
+    }
+
+    // Verify spreadsheet setup on page load
+    async function verifySpreadsheet() {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxBOm4jkoZNtCnyPsWhxC1coi3oGhiXxvnpmB-g_4qex7a5eG62wwvS8DdODukX0Xg2/exec?action=verify', {
+                method: 'GET',
+                mode: 'no-cors'
+            });
+            console.log('Spreadsheet verification requested');
+        } catch (error) {
+            console.error('Error verifying spreadsheet:', error);
+        }
+    }
+
+    // Call verification on page load
+    verifySpreadsheet();
 });
