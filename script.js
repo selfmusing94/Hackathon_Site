@@ -149,6 +149,95 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Add this at the beginning of your DOMContentLoaded function
+    const REGISTRATION_LIMIT = 55;
+    let currentRegistrations = 0;
+
+    // Function to check registration count from Google Sheets
+    async function checkRegistrationCount() {
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec?action=getCount', {
+                method: 'GET',
+                mode: 'no-cors'
+            });
+        
+            // Update this part based on your actual response handling
+            if (currentRegistrations >= REGISTRATION_LIMIT) {
+                showRegistrationClosed();
+            }
+        } catch (error) {
+            console.error('Error checking registration count:', error);
+        }
+    }
+
+    // Function to show registration closed message
+    function showRegistrationClosed() {
+        const form = document.getElementById('registrationForm');
+    
+        // Fade out animation for form
+        form.style.opacity = '0';
+        form.style.transform = 'translateY(20px)';
+        form.style.transition = 'all 0.5s ease-out';
+
+        setTimeout(() => {
+            form.style.display = 'none';
+        
+            // Create slots filled message container
+            const closedDiv = document.createElement('div');
+            closedDiv.className = 'registration-closed';
+            closedDiv.style.opacity = '0';
+            closedDiv.style.transform = 'translateY(-20px)';
+            closedDiv.style.transition = 'all 0.5s ease-out';
+        
+            closedDiv.innerHTML = `
+                <div class="closed-content">
+                    <div class="closed-icon">
+                        <i class="fas fa-door-closed fa-4x"></i>
+                    </div>
+                    <h2 class="closed-title">Registration Closed</h2>
+                    <div class="registration-status">
+                        <div class="status-indicator">
+                            <span class="current-count">${REGISTRATION_LIMIT}</span>
+                            <span class="total-count">/ ${REGISTRATION_LIMIT}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <p class="closed-message">
+                        All slots have been filled! 🎫
+                        <br>
+                        Try filling the forms early next time.
+                    </p>
+                    <div class="contact-support">
+                        <h3>For further information contact:</h3>
+                        <div class="contact-person">
+                            <i class="fas fa-user"></i>
+                            <span>John Doe</span>
+                        </div>
+                        <div class="contact-details">
+                            <a href="tel:+919481627161" class="contact-link">
+                                <i class="fas fa-phone"></i> +91 9481627161
+                            </a>
+                            <a href="mailto:epoch2025@bmsit.in" class="contact-link">
+                                <i class="fas fa-envelope"></i> epoch2025@bmsit.in
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;  
+
+            form.parentNode.insertBefore(closedDiv, form.nextSibling);
+        
+            // Fade in animation for closed message
+            setTimeout(() => {
+                closedDiv.style.opacity = '1';
+                closedDiv.style.transform = 'translateY(0)';
+            }, 100);
+        }, 500);
+    }
+
+
     // Form Submission Handler
     const form = document.getElementById('registrationForm');
     form.addEventListener('submit', async function(e) {

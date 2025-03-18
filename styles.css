@@ -1652,3 +1652,180 @@ textarea:valid ~ label {
 .contact-info .detail-value:hover {
     color: var(--secondary-color);
 }
+/* Registration Closed Styles */
+.registration-closed {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 75, 75, 0.1) 0%,
+        rgba(255, 175, 75, 0.1) 100%
+    );
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 2px solid #ff4b4b;
+    text-align: center;
+    max-width: 600px;
+    margin: 2rem auto;
+    animation: closedAppear 0.6s ease-out forwards,
+               glowingBorderRed 2s infinite alternate;
+}
+
+.closed-icon {
+    font-size: 4rem;
+    color: #ff4b4b;
+    margin-bottom: 1.5rem;
+    animation: shake 0.5s ease-out 0.3s backwards,
+               float 3s ease-in-out infinite;
+}
+
+.closed-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: #ff4b4b;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 75, 75, 0.3);
+}
+
+.registration-status {
+    margin: 2rem auto;
+    max-width: 300px;
+}
+
+.status-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.current-count {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff4b4b;
+}
+
+.total-count {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 75, 75, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4b4b, #ffaf4b);
+    border-radius: 4px;
+    animation: progressFill 1s ease-out;
+}
+
+.closed-message {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin: 2rem 0;
+}
+
+.contact-support {
+    background: rgba(255, 75, 75, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.contact-support h3 {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.contact-person {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #ff4b4b;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color) !important;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: rgba(255, 75, 75, 0.1);
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    background: rgba(255, 75, 75, 0.2);
+    transform: translateX(5px);
+}
+
+@keyframes closedAppear {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes glowingBorderRed {
+    from {
+        box-shadow: 0 0 10px rgba(255, 75, 75, 0.2),
+                    0 0 20px rgba(255, 75, 75, 0.2);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(255, 75, 75, 0.4),
+                    0 0 40px rgba(255, 75, 75, 0.4);
+    }
+}
+
+@keyframes progressFill {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@media (max-width: 768px) {
+    .registration-closed {
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    .closed-title {
+        font-size: 2rem;
+    }
+
+    .closed-message {
+        font-size: 1.1rem;
+    }
+}
