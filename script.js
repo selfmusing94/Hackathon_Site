@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 data[key] = value.trim();
             }
             
-            const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbz3PD4oZTRnDbcFS183SY9ri1Qg15__K0bGXLXsqt263ihNxs5p1oxM4JKZfbunvm4E/exec', {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verify spreadsheet setup on page load
     async function verifySpreadsheet() {
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec?action=verify', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbz3PD4oZTRnDbcFS183SY9ri1Qg15__K0bGXLXsqt263ihNxs5p1oxM4JKZfbunvm4E/exec?action=verify', {
                 method: 'GET',
                 mode: 'no-cors'
             });
