@@ -85,18 +85,24 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`${SCRIPT_URL}?action=getCount`);
             const data = await response.json();
-
+    
             if (data.success) {
                 currentRegistrations = data.count;
                 updateRegistrationCounter(data.count, data.remaining);
-
+    
+                // Check if limit is reached
                 if (currentRegistrations >= REGISTRATION_LIMIT) {
                     // Clear the interval when limit is reached
                     if (registrationCheckInterval) {
                         clearInterval(registrationCheckInterval);
                         console.log('Registration checks stopped - limit reached');
                     }
-                    showRegistrationClosed();
+                    
+                    // Immediately hide form and show closed message
+                    const form = document.getElementById('registrationForm');
+                    if (form && form.style.display !== 'none') {
+                        showRegistrationClosed();
+                    }
                     return false;
                 }
                 return true;
@@ -109,18 +115,25 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
     }
-
+    
     // Modify the startRegistrationCountChecker function
     async function startRegistrationCountChecker() {
         // Check immediately when page loads
         const initialCheck = await checkRegistrationCount();
-    
+        
+        // Check if we're already at or over the limit
+        if (currentRegistrations >= REGISTRATION_LIMIT) {
+            console.log('Registration limit already reached - showing closed message');
+            showRegistrationClosed();
+            return; // Don't start the interval
+        }
+        
         // Only start interval if we haven't reached the limit
-        if (initialCheck && currentRegistrations < REGISTRATION_LIMIT) {
+        if (initialCheck) {
             registrationCheckInterval = setInterval(checkRegistrationCount, 30000);
             console.log('Registration check interval started');
         } else {
-            console.log('Registration checks not started - limit already reached');
+            console.log('Registration checks not started - max limit reached');
         }
     }
 
@@ -247,9 +260,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function showRegistrationClosed() {
-        const form = document.getElementById('registrationForm');
-        
+    // You might also want to modify your showRegistrationClosed function to ensure it works
+function showRegistrationClosed() {
+    const form = document.getElementById('registrationForm');
+    if (!form) return;
+    
+    // Only proceed if the form is still visible
+    if (form.style.display !== 'none') {
         // Fade out animation for form
         form.style.opacity = '0';
         form.style.transform = 'translateY(20px)';
@@ -299,15 +316,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;  
 
-            form.parentNode.insertBefore(closedDiv, form.nextSibling);
-        
-            // Fade in animation for closed message
-            setTimeout(() => {
-                closedDiv.style.opacity = '1';
-                closedDiv.style.transform = 'translateY(0)';
-            }, 100);
+            // Only insert if it doesn't already exist
+            if (!document.querySelector('.registration-closed')) {
+                form.parentNode.insertBefore(closedDiv, form.nextSibling);
+            
+                // Fade in animation for closed message
+                setTimeout(() => {
+                    closedDiv.style.opacity = '1';
+                    closedDiv.style.transform = 'translateY(0)';
+                }, 100);
+            }
         }, 500);
     }
+}
 
     function showSuccessMessage() {
         const form = document.getElementById('registrationForm');
@@ -520,6 +541,15 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
+    // Optional: Add this to force check registration status
+    function forceCheckRegistrationStatus() {
+        checkRegistrationCount().then(status => {
+            if (!status || currentRegistrations >= REGISTRATION_LIMIT) {
+                showRegistrationClosed();
+            }
+        });
+    }
+
     // Initialize everything
     async function initialize() {
         if (!checkEventDate()) return;
@@ -527,32 +557,11 @@ document.addEventListener('DOMContentLoaded', function() {
         createRegistrationCounter();
         setupValidation();
         await initializeSystem();
+        // Force check registration status on page load
+        forceCheckRegistrationStatus();
     }
 
     // Start initialization
     initialize();
 
-    // Development/testing functions (remove in production)
-    window.testRegistrationSystem = async function() {
-        console.log('Testing registration system...');
-        try {
-            // Test count retrieval
-            const response = await fetch(`${SCRIPT_URL}?action=getCount`);
-            const data = await response.json();
-            console.log('Registration count test:', data);
-
-            // Test form validation
-            console.log('Testing form validation...');
-            const testUSN = '1BY20CS001';
-            const testPhone = '9876543210';
-            const testEmail = 'test@example.com';
-            
-            console.log('USN validation test:', validateUSN(testUSN));
-            console.log('Phone validation test:', validatePhone(testPhone));
-            console.log('Email validation test:', validateEmail(testEmail));
-
-        } catch (error) {
-            console.error('Test failed:', error);
-        }
-    };
 });
