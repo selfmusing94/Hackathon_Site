@@ -2,27 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize particles.js
     particlesJS('particles-js', {
         "particles": {
-            "number": {
-                "value": 80,
-                "density": {
-                    "enable": true,
-                    "value_area": 800
-                }
-            },
-            "color": {
-                "value": "#ffffff"
-            },
-            "shape": {
-                "type": "circle"
-            },
-            "opacity": {
-                "value": 0.5,
-                "random": false
-            },
-            "size": {
-                "value": 3,
-                "random": true
-            },
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#ffffff" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": false },
+            "size": { "value": 3, "random": true },
             "line_linked": {
                 "enable": true,
                 "distance": 150,
@@ -43,19 +27,18 @@ document.addEventListener('DOMContentLoaded', function() {
         "interactivity": {
             "detect_on": "canvas",
             "events": {
-                "onhover": {
-                    "enable": true,
-                    "mode": "repulse"
-                },
-                "onclick": {
-                    "enable": true,
-                    "mode": "push"
-                },
+                "onhover": { "enable": true, "mode": "repulse" },
+                "onclick": { "enable": true, "mode": "push" },
                 "resize": true
             }
         },
         "retina_detect": true
     });
+
+    // Constants
+    const REGISTRATION_LIMIT = 60;
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxn6aNbzlATK5JifTXv5-UXQz6Pd4twJtuCGkdh_VC4ngf-r50z2QQ5Lx_Fg6s7p95x/exec';
+    let currentRegistrations = 0;
 
     // Countdown Timer
     const eventDate = new Date('2025-03-27T08:00:00+05:30').getTime();
@@ -96,6 +79,70 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const countdownTimer = setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Registration Count Checker
+    async function checkRegistrationCount() {
+        try {
+            const response = await fetch(`${SCRIPT_URL}?action=getCount`);
+            const data = await response.json();
+
+            if (data.success) {
+                currentRegistrations = data.count;
+                updateRegistrationCounter(data.count, data.remaining);
+
+                if (currentRegistrations >= REGISTRATION_LIMIT) {
+                    // Clear the interval when limit is reached
+                    if (registrationCheckInterval) {
+                        clearInterval(registrationCheckInterval);
+                        console.log('Registration checks stopped - limit reached');
+                    }
+                    showRegistrationClosed();
+                    return false;
+                }
+                return true;
+            } else {
+                console.error('Failed to get registration count:', data.message);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error checking registration count:', error);
+            return false;
+        }
+    }
+
+    // Modify the startRegistrationCountChecker function
+    async function startRegistrationCountChecker() {
+        // Check immediately when page loads
+        const initialCheck = await checkRegistrationCount();
+    
+        // Only start interval if we haven't reached the limit
+        if (initialCheck && currentRegistrations < REGISTRATION_LIMIT) {
+            registrationCheckInterval = setInterval(checkRegistrationCount, 30000);
+            console.log('Registration check interval started');
+        } else {
+            console.log('Registration checks not started - limit already reached');
+        }
+    }
+
+    function updateRegistrationCounter(count, remaining) {
+        const counterElement = document.getElementById('registrationCounter');
+        if (counterElement) {
+            counterElement.innerHTML = `
+                <div class="registration-status">
+                    <div class="status-indicator">
+                        <span class="current-count">${count}</span>
+                        <span class="total-count">/ ${REGISTRATION_LIMIT}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${(count/REGISTRATION_LIMIT)*100}%"></div>
+                    </div>
+                    <div class="slots-remaining">
+                        ${remaining} slots remaining
+                    </div>
+                </div>
+            `;
+        }
+    }
 
     // Dynamic Team Members Form
     function adjustTeamFields() {
@@ -149,31 +196,60 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Add this at the beginning of your DOMContentLoaded function
-    const REGISTRATION_LIMIT = 55;
-    let currentRegistrations = 0;
+    // Form Submission Handler
+    const form = document.getElementById('registrationForm');
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-    // Function to check registration count from Google Sheets
-    async function checkRegistrationCount() {
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec?action=getCount', {
-                method: 'GET',
-                mode: 'no-cors'
-            });
-        
-            // Update this part based on your actual response handling
-            if (currentRegistrations >= REGISTRATION_LIMIT) {
+            // Check registration limit before submission
+            const isAvailable = await checkRegistrationCount();
+            if (!isAvailable) {
+                showError('Registration limit has been reached');
                 showRegistrationClosed();
+                return;
             }
-        } catch (error) {
-            console.error('Error checking registration count:', error);
-        }
-    }
 
-    // Function to show registration closed message
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value.trim();
+            }
+
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showSuccessMessage();
+                // Update registration counter after successful submission
+                checkRegistrationCount();
+            } else {
+                throw new Error(result.message || 'Submission failed');
+            }
+
+        } catch (error) {
+            console.error('Submission error:', error);
+            showError('Registration failed. Please try again or contact support.');
+        } finally {
+            const submitBtn = form.querySelector('.submit-btn');
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    });
+
     function showRegistrationClosed() {
         const form = document.getElementById('registrationForm');
-    
+        
         // Fade out animation for form
         form.style.opacity = '0';
         form.style.transform = 'translateY(20px)';
@@ -211,10 +287,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </p>
                     <div class="contact-support">
                         <h3>For further information contact:</h3>
-                        <div class="contact-person">
-                            <i class="fas fa-user"></i>
-                            <span>John Doe</span>
-                        </div>
                         <div class="contact-details">
                             <a href="tel:+919481627161" class="contact-link">
                                 <i class="fas fa-phone"></i> +91 9481627161
@@ -236,45 +308,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }, 500);
     }
-
-
-    // Form Submission Handler
-    const form = document.getElementById('registrationForm');
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const submitBtn = form.querySelector('.submit-btn');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-        submitBtn.disabled = true;
-
-        try {
-            const formData = new FormData(form);
-            const data = {};
-            
-            for (let [key, value] of formData.entries()) {
-                data[key] = value.trim();
-            }
-            
-            const response = await fetch('https://script.google.com/macros/s/AKfycbz3PD4oZTRnDbcFS183SY9ri1Qg15__K0bGXLXsqt263ihNxs5p1oxM4JKZfbunvm4E/exec', {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'text/plain'
-                },
-                body: JSON.stringify(data)
-            });
-
-            showSuccessMessage();
-            
-        } catch (error) {
-            console.error('Submission error:', error);
-            showError('Registration failed. Please try again or contact support.');
-        } finally {
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.disabled = false;
-        }
-    });
 
     function showSuccessMessage() {
         const form = document.getElementById('registrationForm');
@@ -328,47 +361,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="whatsapp-link">
                     <p>Stay updated! Join our WhatsApp group:</p>
                     <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" 
-                    target="_blank" 
-                    class="whatsapp-button">
-                    <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+                       target="_blank" 
+                       class="whatsapp-button">
+                       <i class="fab fa-whatsapp"></i> Join WhatsApp Group
                     </a>
                 </div>
     
                 <div class="contact-info">
                     <p>For any queries, contact our team:</p>
-                    <div class="detail-item">
-                    <span class="detail-label">
-                    <i class="fas fa-phone"></i> Phone
-                    </span>
-                    <a href="tel:+919481627161" class="detail-value">
-                    +91 9481627161
-                    </a>
+                    <div class="contact-details">
+                        <a href="tel:+919481627161" class="contact-link">
+                            <i class="fas fa-phone"></i> +91 9481627161
+                        </a>
+                        <a href="mailto:epoch2025@bmsit.in" class="contact-link">
+                            <i class="fas fa-envelope"></i> epoch2025@bmsit.in
+                        </a>
+                    </div>
                 </div>
-
-                <div class="detail-item">
-                    <span class="detail-label">
-                    <i class="fas fa-envelope"></i> Email
-                    </span>
-                    <a href="mailto:epoch2025@bmsit.in" class="detail-value">
-                    epoch2025@bmsit.in
-                    </a>
-                </div>
-            </div>
             `;
     
             form.parentNode.insertBefore(successDiv, form.nextSibling);
             
-            // Add animation classes after a short delay
             setTimeout(() => {
                 successDiv.style.opacity = '1';
                 successDiv.style.transform = 'translateY(0)';
                 
-                // Add shimmer effect
-                const shimmer = document.createElement('div');
-                shimmer.className = 'shimmer-effect';
-                successDiv.appendChild(shimmer);
-                
-                // Add confetti effect
+                // Add confetti effect if available
                 if (typeof confetti === 'function') {
                     confetti({
                         particleCount: 100,
@@ -396,23 +414,145 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Initialize team fields
+    // Initialize team fields handler
     document.getElementById('teamSize').addEventListener('change', adjustTeamFields);
     adjustTeamFields();
 
-    // Verify spreadsheet setup on page load
-    async function verifySpreadsheet() {
+    // Verify spreadsheet setup and start monitoring
+    async function initializeSystem() {
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbz3PD4oZTRnDbcFS183SY9ri1Qg15__K0bGXLXsqt263ihNxs5p1oxM4JKZfbunvm4E/exec?action=verify', {
-                method: 'GET',
-                mode: 'no-cors'
-            });
-            console.log('Spreadsheet verification requested');
+            // Verify spreadsheet setup
+            const response = await fetch(`${SCRIPT_URL}?action=verify`);
+            const data = await response.json();
+            
+            if (data.success) {
+                console.log('Sheet verification successful');
+                // Start registration monitoring
+                startRegistrationCountChecker();
+            } else {
+                console.error('Sheet verification failed:', data.message);
+                showError('System initialization failed. Please refresh the page or contact support.');
+            }
         } catch (error) {
-            console.error('Error verifying spreadsheet:', error);
+            console.error('Initialization error:', error);
+            showError('Unable to connect to registration system. Please refresh the page.');
         }
     }
 
-    // Call verification on page load
-    verifySpreadsheet();
+    // Add registration counter to the page if not exists
+    function createRegistrationCounter() {
+        if (!document.getElementById('registrationCounter')) {
+            const counterDiv = document.createElement('div');
+            counterDiv.id = 'registrationCounter';
+            counterDiv.className = 'registration-counter';
+            
+            // Insert counter before the form
+            const form = document.getElementById('registrationForm');
+            form.parentNode.insertBefore(counterDiv, form);
+        }
+    }
+
+    // Form validation functions
+    function validatePhone(phone) {
+        const phoneRegex = /^[6-9]\d{9}$/;
+        return phoneRegex.test(phone);
+    }
+
+    function validateUSN(usn) {
+        const usnRegex = /^1BY\d{2}[A-Z]{2}\d{3}$/;
+        return usnRegex.test(usn.toUpperCase());
+    }
+
+    function validateEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    }
+
+    // Add input validation listeners
+    function setupValidation() {
+        const form = document.getElementById('registrationForm');
+        
+        // Phone number validation
+        const phoneInputs = form.querySelectorAll('input[type="tel"]');
+        phoneInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (!validatePhone(this.value)) {
+                    this.setCustomValidity('Please enter a valid 10-digit mobile number starting with 6-9');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+
+        // USN validation
+        const usnInputs = form.querySelectorAll('input[id$="USN"]');
+        usnInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (!validateUSN(this.value)) {
+                    this.setCustomValidity('Please enter a valid USN (e.g., 1BY20CS001)');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+
+        // Email validation
+        const emailInputs = form.querySelectorAll('input[type="email"]');
+        emailInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (!validateEmail(this.value)) {
+                    this.setCustomValidity('Please enter a valid email address');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+    }
+
+    // Function to check if event date has passed
+    function checkEventDate() {
+        const now = new Date().getTime();
+        if (now >= eventDate) {
+            showError('Registration period has ended');
+            showRegistrationClosed();
+            return false;
+        }
+        return true;
+    }
+
+    // Initialize everything
+    async function initialize() {
+        if (!checkEventDate()) return;
+        
+        createRegistrationCounter();
+        setupValidation();
+        await initializeSystem();
+    }
+
+    // Start initialization
+    initialize();
+
+    // Development/testing functions (remove in production)
+    window.testRegistrationSystem = async function() {
+        console.log('Testing registration system...');
+        try {
+            // Test count retrieval
+            const response = await fetch(`${SCRIPT_URL}?action=getCount`);
+            const data = await response.json();
+            console.log('Registration count test:', data);
+
+            // Test form validation
+            console.log('Testing form validation...');
+            const testUSN = '1BY20CS001';
+            const testPhone = '9876543210';
+            const testEmail = 'test@example.com';
+            
+            console.log('USN validation test:', validateUSN(testUSN));
+            console.log('Phone validation test:', validatePhone(testPhone));
+            console.log('Email validation test:', validateEmail(testEmail));
+
+        } catch (error) {
+            console.error('Test failed:', error);
+        }
+    };
 });
