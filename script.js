@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 memberSection.className = 'form-section';
                 memberSection.innerHTML = `
                     <div class="section-header">
-                        <span class="section-number">0${i}</span>
+                        <span class="section-number">0${i+1}</span>
                         <h2>TEAM MEMBER ${i}</h2>
                     </div>
                     <div class="form-group">
