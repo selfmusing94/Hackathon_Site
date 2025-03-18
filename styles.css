@@ -511,37 +511,6 @@ textarea:valid ~ label {
     box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
 }
 
-/* Success Message */
-.success-message {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 255, 136, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 1.5rem 3rem;
-    border-radius: 8px;
-    border: 1px solid var(--success-color);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.success-message.show {
-    opacity: 1;
-    visibility: visible;
-    animation: float 0.5s ease-out;
-}
-
-.success-icon {
-    color: var(--success-color);
-    font-size: 1.5rem;
-}
-
 /* Animations */
 @keyframes glitch {
     0% {
@@ -1173,47 +1142,6 @@ textarea:valid ~ label {
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
 }
 
-/* Success Message - Improved */
-.success-container {
-    background: rgba(10, 10, 31, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 3rem;
-    border-radius: 20px;
-    border: 1px solid var(--success-color);
-    text-align: center;
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    max-width: 600px;
-    margin: 2rem auto;
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
-}
-
-.success-container.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.success-icon {
-    font-size: 4rem;
-    color: var(--success-color);
-    margin-bottom: 1.5rem;
-    animation: pulse-success 2s infinite;
-}
-
-.success-title {
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    color: var(--success-color);
-    margin-bottom: 1rem;
-}
-
-.success-message {
-    font-size: 1.2rem;
-    color: var(--text-color);
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
 
 /* Current Time Display */
 .time-display {
@@ -1476,4 +1404,251 @@ textarea:valid ~ label {
     font-size: 0.9rem;
     margin-bottom: 0.3rem;
     opacity: 0.9;
+}
+/* Enhanced Success Message Styles */
+.success-container {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 255, 136, 0.1) 0%,
+        rgba(0, 255, 255, 0.1) 100%
+    );
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 2px solid var(--success-color);
+    text-align: center;
+    max-width: 600px;
+    margin: 2rem auto;
+    animation: successAppear 0.6s ease-out forwards,
+               glowingBorder 2s infinite alternate;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 136, 0.2),
+        transparent
+    );
+    animation: shimmer 2s infinite;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: var(--success-color);
+    margin-bottom: 1.5rem;
+    animation: successIconPop 0.5s ease-out 0.3s backwards,
+               float 3s ease-in-out infinite;
+    display: inline-block;
+}
+
+.success-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    animation: slideUp 0.5s ease-out 0.4s backwards;
+}
+
+.success-message {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    animation: slideUp 0.5s ease-out 0.5s backwards;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+}
+
+.confirmation-details {
+    background: rgba(0, 255, 136, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 2rem auto;
+    max-width: 400px;
+    animation: slideUp 0.5s ease-out 0.6s backwards;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.detail-value {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+/* Enhanced Animations */
+@keyframes successAppear {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes glowingBorder {
+    from {
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.2),
+                    0 0 20px rgba(0, 255, 136, 0.2);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.4),
+                    0 0 40px rgba(0, 255, 136, 0.4);
+    }
+}
+
+@keyframes successIconPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes shimmer {
+    100% {
+        left: 100%;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .success-container {
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    .success-title {
+        font-size: 2rem;
+    }
+
+    .success-message {
+        font-size: 1.1rem;
+    }
+}
+/* Enhanced Link Styles */
+.success-container a {
+    color: var(--accent-color); /* Using your theme's accent color */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.2rem 0;
+}
+
+.success-container a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* Special styling for WhatsApp button */
+.whatsapp-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(
+        45deg,
+        #25d366 0%,
+        #128C7E 100%
+    );
+    color: white !important; /* Override default link color */
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: 1rem;
+    border: none;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+    transition: all 0.3s ease !important;
+}
+
+.whatsapp-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+    color: white !important;
+    text-shadow: none !important;
+}
+
+.whatsapp-button i {
+    font-size: 1.2rem;
+}
+
+/* Email link styling */
+.contact-info a {
+    color: var(--success-color) !important;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    background: rgba(0, 255, 136, 0.1);
+    transition: all 0.3s ease;
+}
+
+.contact-info a:hover {
+    background: rgba(0, 255, 136, 0.2);
+    transform: translateX(5px);
+    text-shadow: none !important;
+}
+
+/* Phone number link styling */
+.contact-info .detail-value {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.contact-info .detail-value:hover {
+    color: var(--secondary-color);
 }

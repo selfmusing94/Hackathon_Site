@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         form.style.opacity = '0';
         form.style.transform = 'translateY(20px)';
         form.style.transition = 'all 0.5s ease-out';
-
+    
         setTimeout(() => {
             form.style.display = 'none';
             
@@ -205,39 +205,92 @@ document.addEventListener('DOMContentLoaded', function() {
             successDiv.style.transform = 'translateY(-20px)';
             successDiv.style.transition = 'all 0.5s ease-out';
             
+            // Generate unique registration ID
+            const regId = `EPOCH${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            const currentDate = new Date().toISOString().split('T')[0];
+            
             successDiv.innerHTML = `
-                <div class="success-content">
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle fa-4x"></i>
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                
+                <h2 class="success-title">Registration Successful!</h2>
+                
+                <p class="success-message">
+                    🎉 Congratulations! Your journey to EPOCH 2025 begins here. 
+                    Get ready for an incredible experience of innovation and technology! 🚀
+                </p>
+                
+                <div class="confirmation-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Registration ID</span>
+                        <span class="detail-value">${regId}</span>
                     </div>
-                    <h2 class="success-title">Registration Successful!</h2>
-                    <p class="success-message">
-                        🎉 Best of luck for EPOCH 2025! May your innovation shine bright! 🚀
-                    </p>
-                    <div class="whatsapp-link">
-                        <p>Join our WhatsApp group for updates:</p>
-                        <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" target="_blank" class="whatsapp-button">
-                            <i class="fab fa-whatsapp"></i> Join WhatsApp Group
-                        </a>
+                    <div class="detail-item">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value">${currentDate}</span>
                     </div>
-                    <div class="contact-info">
-                        <p>For any queries, contact:</p>
-                        <p><i class="fas fa-phone"></i> +91 9481627161</p>
-                        <p><i class="fas fa-envelope"></i> epoch2025@bmsit.in</p>
+                    <div class="detail-item">
+                        <span class="detail-label">Status</span>
+                        <span class="detail-value">Confirmed</span>
                     </div>
                 </div>
-            `;
+    
+                <div class="whatsapp-link">
+                    <p>Stay updated! Join our WhatsApp group:</p>
+                    <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" 
+                    target="_blank" 
+                    class="whatsapp-button">
+                    <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+                    </a>
+                </div>
+    
+                <div class="contact-info">
+                    <p>For any queries, contact our team:</p>
+                    <div class="detail-item">
+                    <span class="detail-label">
+                    <i class="fas fa-phone"></i> Phone
+                    </span>
+                    <a href="tel:+919481627161" class="detail-value">
+                    +91 9481627161
+                    </a>
+                </div>
 
+                <div class="detail-item">
+                    <span class="detail-label">
+                    <i class="fas fa-envelope"></i> Email
+                    </span>
+                    <a href="mailto:epoch2025@bmsit.in" class="detail-value">
+                    epoch2025@bmsit.in
+                    </a>
+                </div>
+            </div>
+            `;
+    
             form.parentNode.insertBefore(successDiv, form.nextSibling);
             
-            // Fade in animation for success message
+            // Add animation classes after a short delay
             setTimeout(() => {
                 successDiv.style.opacity = '1';
                 successDiv.style.transform = 'translateY(0)';
+                
+                // Add shimmer effect
+                const shimmer = document.createElement('div');
+                shimmer.className = 'shimmer-effect';
+                successDiv.appendChild(shimmer);
+                
+                // Add confetti effect
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
             }, 100);
         }, 500);
     }
-
+    
     function showError(message) {
         const errorMessage = document.createElement('div');
         errorMessage.className = 'error-message show';
