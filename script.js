@@ -1,39 +1,75 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Particles.js initialization
-    particlesJS("particles-js", {
-        particles: {
-            number: { value: 80, density: { enable: true, value_area: 800 } },
-            color: { value: "#ffffff" },
-            shape: { type: "circle" },
-            opacity: { value: 0.5, random: false },
-            size: { value: 3, random: true },
-            line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-            move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
-        },
-        interactivity: {
-            detect_on: "canvas",
-            events: {
-                onhover: { enable: true, mode: "repulse" },
-                onclick: { enable: true, mode: "push" },
-                resize: true
+    // Initialize particles.js
+    particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle"
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false
+            },
+            "size": {
+                "value": 3,
+                "random": true
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false
             }
         },
-        retina_detect: true
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            }
+        },
+        "retina_detect": true
     });
 
     // Countdown Timer
-    const countDownDate = new Date("March 27, 2025 08:00:00").getTime();
-    
+    const eventDate = new Date('2025-03-27T08:00:00+05:30').getTime();
+
     function updateCountdown() {
         const now = new Date().getTime();
-        const distance = countDownDate - now;
-        
+        const distance = eventDate - now;
+
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        document.getElementById("countdown").innerHTML = `
+
+        document.getElementById('countdown').innerHTML = `
             <div class="countdown-item">
                 <span class="time-value">${days}</span>
                 <span class="time-label">DAYS</span>
@@ -51,14 +87,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="time-label">SECONDS</span>
             </div>
         `;
+
+        if (distance < 0) {
+            clearInterval(countdownTimer);
+            document.getElementById('countdown').innerHTML = "EVENT HAS STARTED";
+        }
     }
-    
-    setInterval(updateCountdown, 1000);
+
+    const countdownTimer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Form Handling
-    const form = document.getElementById('registrationForm');
-    
+    // Dynamic Team Members Form
     function adjustTeamFields() {
         const teamSize = document.getElementById('teamSize').value;
         const teamMembersSection = document.getElementById('teamMembersSection');
@@ -79,14 +118,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="input-line"></div>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="member${i}USN" name="Member ${i} USN" 
-                               required pattern="1BY\\d{2}[A-Z]{2}\\d{3}">
+                        <input type="text" id="member${i}USN" name="Member ${i} USN" required>
                         <label for="member${i}USN">USN</label>
                         <div class="input-line"></div>
                     </div>
                     <div class="form-group">
                         <input type="email" id="member${i}Email" name="Member ${i} Email" required>
                         <label for="member${i}Email">EMAIL</label>
+                        <div class="input-line"></div>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="member${i}Phone" name="Member ${i} Phone" required>
+                        <label for="member${i}Phone">PHONE NUMBER</label>
                         <div class="input-line"></div>
                     </div>
                     <div class="form-group">
@@ -106,17 +149,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    document.getElementById('teamSize').addEventListener('change', adjustTeamFields);
-
-    // Form Submission
+    // Form Submission Handler
+    const form = document.getElementById('registrationForm');
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-    
+
         const submitBtn = form.querySelector('.submit-btn');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
         submitBtn.disabled = true;
-    
+
         try {
             const formData = new FormData(form);
             const data = {};
@@ -124,16 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let [key, value] of formData.entries()) {
                 data[key] = value.trim();
             }
-
-            // Get current timestamp in IST
-            const now = new Date();
-            // Add 5 hours and 30 minutes for IST offset
-            now.setTime(now.getTime() + (5.5 * 60 * 60 * 1000));
-            const timestamp = now.toISOString().slice(0, 19).replace('T', ' ');
-            data.timestamp = timestamp;
-    
-            console.log('Submitting data:', data);
-    
+            
             const response = await fetch('https://script.google.com/macros/s/AKfycbwWyacBcKk5v3flpTGlO6SdVOl5Bj-Hv361oc8wpnHwin3U-kVWPRs5eiR8yf_f06U/exec', {
                 method: 'POST',
                 mode: 'no-cors',
@@ -142,29 +175,67 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify(data)
             });
-    
-            console.log('Form submitted at:', timestamp);
-            showSuccess();
-            form.reset();
-            adjustTeamFields();
+
+            showSuccessMessage();
             
         } catch (error) {
             console.error('Submission error:', error);
-            showError('Form submission failed. Please try again or contact support.');
+            showError('Registration failed. Please try again or contact support.');
         } finally {
             submitBtn.innerHTML = originalBtnText;
             submitBtn.disabled = false;
         }
     });
 
-    function showSuccess() {
-        const successMessage = document.getElementById('successMessage');
-        successMessage.classList.remove('hidden');
-        successMessage.classList.add('show');
+    function showSuccessMessage() {
+        const form = document.getElementById('registrationForm');
+        
+        // Fade out animation for form
+        form.style.opacity = '0';
+        form.style.transform = 'translateY(20px)';
+        form.style.transition = 'all 0.5s ease-out';
+
         setTimeout(() => {
-            successMessage.classList.remove('show');
-            successMessage.classList.add('hidden');
-        }, 5000);
+            form.style.display = 'none';
+            
+            // Create success message container
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-container';
+            successDiv.style.opacity = '0';
+            successDiv.style.transform = 'translateY(-20px)';
+            successDiv.style.transition = 'all 0.5s ease-out';
+            
+            successDiv.innerHTML = `
+                <div class="success-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle fa-4x"></i>
+                    </div>
+                    <h2 class="success-title">Registration Successful!</h2>
+                    <p class="success-message">
+                        🎉 Best of luck for EPOCH 2025! May your innovation shine bright! 🚀
+                    </p>
+                    <div class="whatsapp-link">
+                        <p>Join our WhatsApp group for updates:</p>
+                        <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" target="_blank" class="whatsapp-button">
+                            <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+                        </a>
+                    </div>
+                    <div class="contact-info">
+                        <p>For any queries, contact:</p>
+                        <p><i class="fas fa-phone"></i> +91 9481627161</p>
+                        <p><i class="fas fa-envelope"></i> epoch2025@bmsit.in</p>
+                    </div>
+                </div>
+            `;
+
+            form.parentNode.insertBefore(successDiv, form.nextSibling);
+            
+            // Fade in animation for success message
+            setTimeout(() => {
+                successDiv.style.opacity = '1';
+                successDiv.style.transform = 'translateY(0)';
+            }, 100);
+        }, 500);
     }
 
     function showError(message) {
@@ -182,6 +253,10 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessage.remove();
         }, 5000);
     }
+
+    // Initialize team fields
+    document.getElementById('teamSize').addEventListener('change', adjustTeamFields);
+    adjustTeamFields();
 
     // Verify spreadsheet setup on page load
     async function verifySpreadsheet() {
