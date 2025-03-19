@@ -349,7 +349,7 @@ function showRegistrationClosed() {
             successDiv.style.transition = 'all 0.5s ease-out';
             
             // Generate unique registration ID
-            const regId = `EPOCH${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            const regId = `NEURONOVA${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
             const currentDate = new Date().toISOString().split('T')[0];
             
             successDiv.innerHTML = `
@@ -360,7 +360,7 @@ function showRegistrationClosed() {
                 <h2 class="success-title">Registration Successful!</h2>
                 
                 <p class="success-message">
-                    🎉 Congratulations! Your journey to EPOCH 2025 begins here. 
+                    🎉 Congratulations! Your journey to NEURONOVA 2025 begins here. 
                     Get ready for an incredible experience of innovation and technology! 🚀
                 </p>
                 
@@ -381,7 +381,7 @@ function showRegistrationClosed() {
     
                 <div class="whatsapp-link">
                     <p>Stay updated! Join our WhatsApp group:</p>
-                    <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" 
+                    <a href="https://chat.whatsapp.com/Kf53muY2QUMHzqeaN0RDA9" 
                        target="_blank" 
                        class="whatsapp-button">
                        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
@@ -393,9 +393,6 @@ function showRegistrationClosed() {
                     <div class="contact-details">
                         <a href="tel:+919481627161" class="contact-link">
                             <i class="fas fa-phone"></i> +91 9481627161
-                        </a>
-                        <a href="mailto:epoch2025@bmsit.in" class="contact-link">
-                            <i class="fas fa-envelope"></i> epoch2025@bmsit.in
                         </a>
                     </div>
                 </div>
