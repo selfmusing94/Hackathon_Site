@@ -308,6 +308,9 @@ function showRegistrationClosed() {
                             <a href="tel:+919481627161" class="contact-link">
                                 <i class="fas fa-phone"></i> +91 9481627161
                             </a>
+                            <a href="mailto:selfmusing9@gmail.com" class="contact-link">
+                                <i class="fas fa-envelope"></i> selfmusing9@gmail.com
+                            </a>
                         </div>
                     </div>
                 </div>
