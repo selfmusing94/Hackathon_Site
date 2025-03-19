@@ -973,8 +973,6 @@ textarea:valid ~ label {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.3));
-    transition: filter 0.3s ease;
 }
 
 .institution-name {
@@ -2320,5 +2318,86 @@ textarea:valid ~ label {
 
     .third {
         order: 3;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .closed-content {
+        padding: 2rem 1rem;
+    }
+
+    .closed-icon {
+        font-size: 2rem;
+    }
+
+    .closed-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .registration-status {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .status-indicator {
+        margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+        width: 100%;
+    }
+
+    .closed-message {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .contact-support {
+        text-align: center;
+    }
+
+    .contact-details {
+        margin-top: 1rem;
+    }
+
+    .contact-link {
+        font-size: 1rem;
+    }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+    .closed-icon {
+        font-size: 1.5rem;
+    }
+
+    .closed-title {
+        font-size: 1.2rem;
+    }
+
+    .registration-status {
+        margin-top: 1rem;
+    }
+
+    .status-indicator {
+        font-size: 0.9rem;
+    }
+
+    .progress-bar {
+        height: 5px;
+    }
+
+    .closed-message {
+        font-size: 0.9rem;
+    }
+
+    .contact-support h3 {
+        font-size: 1rem;
+    }
+
+    .contact-link {
+        font-size: 0.8rem;
     }
 }
