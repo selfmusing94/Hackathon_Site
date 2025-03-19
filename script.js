@@ -308,9 +308,6 @@ function showRegistrationClosed() {
                             <a href="tel:+919481627161" class="contact-link">
                                 <i class="fas fa-phone"></i> +91 9481627161
                             </a>
-                            <a href="mailto:epoch2025@bmsit.in" class="contact-link">
-                                <i class="fas fa-envelope"></i> epoch2025@bmsit.in
-                            </a>
                         </div>
                     </div>
                 </div>
