@@ -213,6 +213,11 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
+        // Immediately update button state and show spinner
+        const submitBtn = form.querySelector('.submit-btn');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        submitBtn.disabled = true;
+
         try {
             // Check registration limit before submission
             const isAvailable = await checkRegistrationCount();
@@ -222,14 +227,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const submitBtn = form.querySelector('.submit-btn');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-            submitBtn.disabled = true;
-
             const formData = new FormData(form);
             const data = {};
-            
+        
             for (let [key, value] of formData.entries()) {
                 data[key] = value.trim();
             }
@@ -240,8 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const result = await response.json();
-
             if (result.success) {
+
                 showSuccessMessage();
                 // Update registration counter after successful submission
                 checkRegistrationCount();
@@ -253,8 +253,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Submission error:', error);
             showError('Registration failed. Please try again or contact support.');
         } finally {
+            // Restore button state after submission
             const submitBtn = form.querySelector('.submit-btn');
-            submitBtn.innerHTML = originalBtnText;
+            submitBtn.innerHTML = 'Register';
             submitBtn.disabled = false;
         }
     });
