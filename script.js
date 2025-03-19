@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Constants
     const REGISTRATION_LIMIT = 60;
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxn6aNbzlATK5JifTXv5-UXQz6Pd4twJtuCGkdh_VC4ngf-r50z2QQ5Lx_Fg6s7p95x/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHs9JeZEp0Eq4MXipufh9JuhzMuumsR7zsgyt_Q4Qp5ZBv3xhpomnh-jclb0zleoe2/exec';
     let currentRegistrations = 0;
 
     // Countdown Timer
