@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <option value="6">6th Semester</option>
                             <option value="8">8th Semester</option>
                         </select>
-                        <label for="member${i}Semester">SEMESTER</label>
                         <div class="input-line"></div>
                     </div>
                 `;
