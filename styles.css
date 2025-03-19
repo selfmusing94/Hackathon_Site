@@ -1015,6 +1015,65 @@ textarea:valid ~ label {
     margin-top: 3rem;
 }
 
+@media (max-width: 768px) {
+    .sponsor-section {
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .collaboration-container {
+        gap: 2rem;
+        margin-top: 2rem;
+        flex-direction: column;
+    }
+    
+    .sponsor-block, .department-block {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+    
+    .sponsor-logo, .dept-logo {
+        width: 120px;
+        height: 120px;
+        padding: 1rem;
+    }
+    
+    .sponsor-info h3, .dept-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .sponsor-info p, .dept-info p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sponsor-section {
+        padding: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .collaboration-container {
+        gap: 1.5rem;
+    }
+    
+    .sponsor-logo, .dept-logo {
+        width: 100px;
+        height: 100px;
+    }
+}
+
 .sponsor-block, .department-block {
     flex: 1;
     max-width: 400px;
