@@ -386,15 +386,6 @@ function showRegistrationClosed() {
                        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
                     </a>
                 </div>
-    
-                <div class="contact-info">
-                    <p>For any queries, contact our team:</p>
-                    <div class="contact-details">
-                        <a href="tel:+919481627161" class="contact-link">
-                            <i class="fas fa-phone"></i> +91 9481627161
-                        </a>
-                    </div>
-                </div>
             `;
     
             form.parentNode.insertBefore(successDiv, form.nextSibling);
