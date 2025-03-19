@@ -80,6 +80,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const countdownTimer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
+    const psReleaseDate = new Date('2025-03-26T08:00:00');
+
+    function updatepsReleaseCountdown() {
+        const now = new Date();
+        const targetDate = now < psReleaseDate ? psReleaseDate : eventDate;
+        const timeLeft = targetDate - now;
+
+        if (timeLeft <= 0) {
+            if (targetDate === psReleaseDate) {
+                document.getElementById('psCountdown').innerHTML = 
+                    '<div class="released-notice">Problem Statement Released!</div>';
+            } else {
+                document.getElementById('psCountdown').innerHTML = 
+                    '<div class="event-started">Event Started!</div>';
+            }
+            return;
+        }
+
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        document.querySelector('.days').textContent = days.toString().padStart(2, '0');
+        document.querySelector('.hours').textContent = hours.toString().padStart(2, '0');
+        document.querySelector('.minutes').textContent = minutes.toString().padStart(2, '0');
+        document.querySelector('.seconds').textContent = seconds.toString().padStart(2, '0');
+    }
+
+    // Update countdown every second
+    setInterval(updatepsReleaseCountdown, 1000);
+    updatepsReleaseCountdown(); // Initial call
+
     // Registration Count Checker
     async function checkRegistrationCount() {
         try {
