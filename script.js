@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentRegistrations = 0;
 
     // Countdown Timer
-    const eventDate = new Date('2025-03-27T08:00:00+05:30').getTime();
+    const eventDate = new Date('2025-03-26T08:00:00+05:30').getTime();
 
     function updateCountdown() {
         const now = new Date().getTime();

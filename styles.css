@@ -2920,9 +2920,7 @@ textarea:valid ~ label {
         padding: 1.5rem;
     }
 
-    .ps-countdown {
-        gap: 0.8rem;
-    }
+  
 
     .count {
         font-size: 1.5rem;
@@ -2931,4 +2929,15 @@ textarea:valid ~ label {
     .label {
         font-size: 0.7rem;
     }
+}
+.sub-events {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.sub-events li {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
 }
