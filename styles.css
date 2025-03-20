@@ -2920,7 +2920,9 @@ textarea:valid ~ label {
         padding: 1.5rem;
     }
 
-  
+    .ps-countdown {
+        gap: 0.8rem;
+    }
 
     .count {
         font-size: 1.5rem;
