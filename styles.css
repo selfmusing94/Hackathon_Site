@@ -2724,39 +2724,6 @@ textarea:valid ~ label {
 }
 
 /* Responsive Design */
-@media screen and (max-width: 768px) {
-    .ps-countdown {
-        gap: 1rem;
-    }
-
-    .count {
-        font-size: 2rem;
-    }
-
-    .label {
-        font-size: 0.8rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .pre-event-notice {
-        padding: 1.5rem;
-    }
-
-    .ps-countdown {
-        gap: 0.8rem;
-    }
-
-    .count {
-        font-size: 1.5rem;
-    }
-
-    .label {
-        font-size: 0.7rem;
-    }
-}
-
-/* Responsive Design */
 @media screen and (min-width: 1441px) {
     .timeline {
         max-width: 1400px;
