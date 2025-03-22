@@ -2910,3 +2910,114 @@ textarea:valid ~ label {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.8);
 }
+/* Simplified AIML Notice Styles */
+.aiml-note-box {
+    max-width: 800px;
+    margin: 30px auto;
+    background: rgba(13, 12, 24, 0.95);
+    border: 3px solid #582BFF;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(88, 43, 255, 0.2);
+}
+
+.aiml-note-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.aiml-note-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #582BFF, #D853FF);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+}
+
+.aiml-note-text {
+    flex-grow: 1;
+}
+
+.aiml-note-title {
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.aiml-note-title i {
+    color: #D853FF;
+}
+
+.aiml-note-description {
+    color: #fff;
+    line-height: 1.5;
+}
+
+.aiml-note-highlight {
+    color: #D853FF;
+    font-weight: 600;
+}
+
+.aiml-note-info {
+    background: rgba(88, 43, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.aiml-note-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    margin: 8px 0;
+}
+
+.aiml-note-item i.fa-check-circle {
+    color: #4CAF50;
+}
+
+.aiml-note-item i.fa-times-circle {
+    color: #ff3860;
+}
+
+.aiml-note-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #582BFF, #D853FF);
+    color: white;
+    padding: 3px 12px;
+    border-radius: 15px;
+    font-weight: 600;
+    margin: 0 5px;
+}
+
+/* Simple responsive design */
+@media (max-width: 768px) {
+    .aiml-note-box {
+        margin: 20px;
+    }
+
+    .aiml-note-content {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .aiml-note-title {
+        justify-content: center;
+    }
+
+    .aiml-note-item {
+        justify-content: center;
+    }
+}
