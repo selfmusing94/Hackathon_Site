@@ -205,6 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 teamMembersSection.appendChild(memberSection);
             }
+            // Re-run validation setup for new fields
+        setupValidation();
         }
     }
 
@@ -468,7 +470,8 @@ function showRegistrationClosed() {
     }
 
     function validateUSN(usn) {
-        const usnRegex = /^1BY\d{2}[A-Z]{2}\d{3}$/;
+        // USN format: 1BY__AI___ where _ represents digits
+        const usnRegex = /^1BY\d{2}AI\d{3}$/;
         return usnRegex.test(usn.toUpperCase());
     }
 
@@ -485,38 +488,86 @@ function showRegistrationClosed() {
         const phoneInputs = form.querySelectorAll('input[type="tel"]');
         phoneInputs.forEach(input => {
             input.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, ''); // Remove non-digits
                 if (!validatePhone(this.value)) {
-                    this.setCustomValidity('Please enter a valid 10-digit mobile number starting with 6-9');
+                    this.setCustomValidity('Please enter a valid 10-digit mobile number.');
+                    this.classList.add('invalid');
                 } else {
                     this.setCustomValidity('');
+                    this.classList.remove('invalid');
                 }
             });
         });
-
+    
         // USN validation
         const usnInputs = form.querySelectorAll('input[id$="USN"]');
         usnInputs.forEach(input => {
             input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase(); // Convert to uppercase
                 if (!validateUSN(this.value)) {
-                    this.setCustomValidity('Please enter a valid USN (e.g., 1BY20CS001)');
+                    if (!this.value.includes('AI')) {
+                        this.setCustomValidity('This event is only for AI&ML students. Please enter a valid USN with AI branch code.');
+                    } else {
+                        this.setCustomValidity('Please enter a valid USN in format 1BY__AI___ (e.g., 1BY20AI001)');
+                    }
+                    this.classList.add('invalid');
                 } else {
                     this.setCustomValidity('');
+                    this.classList.remove('invalid');
+                }
+                // Show immediate feedback for non-AI USNs
+                if (this.value.length >= 7 && !this.value.includes('AI')) {
+                    showError('This event is only for AI&ML students');
                 }
             });
         });
-
+    
         // Email validation
         const emailInputs = form.querySelectorAll('input[type="email"]');
         emailInputs.forEach(input => {
             input.addEventListener('input', function() {
                 if (!validateEmail(this.value)) {
                     this.setCustomValidity('Please enter a valid email address');
+                    this.classList.add('invalid');
                 } else {
                     this.setCustomValidity('');
+                    this.classList.remove('invalid');
+                }
+            });
+        });
+    
+        // Add real-time validation styling
+        const allInputs = form.querySelectorAll('input[type="tel"], input[id$="USN"], input[type="email"]');
+        allInputs.forEach(input => {
+            // Add styling for invalid fields
+            input.addEventListener('invalid', function() {
+                this.classList.add('invalid');
+            });
+            
+            // Remove invalid styling when user starts typing
+            input.addEventListener('input', function() {
+                if (this.checkValidity()) {
+                    this.classList.remove('invalid');
                 }
             });
         });
     }
+    
+    // Add some CSS for invalid inputs
+    const style = document.createElement('style');
+    style.textContent = `
+        input.invalid {
+            border-color: #ff3860 !important;
+            background-color: rgba(255, 56, 96, 0.05) !important;
+        }
+        input.invalid + .input-line {
+            background-color: #ff3860 !important;
+        }
+        input.invalid:focus + .input-line {
+            background-color: #ff3860 !important;
+        }
+    `;
+    document.head.appendChild(style);
 
     // Function to check if event date has passed
     function checkEventDate() {
