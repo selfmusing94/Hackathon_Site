@@ -604,3 +604,86 @@ function showRegistrationClosed() {
     initialize();
 
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to check if element is in viewport
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    // Function to create confetti
+    function createConfetti(problemStatementCard) {
+        const colors = ['#FFD700', '#C0C0C0', '#CD7F32', '#582BFF', '#D853FF'];
+        const confettiCount = 100;
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            // Random properties
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const opacity = Math.random() * 0.8 + 0.2;
+            const rotation = Math.random() * 360;
+            const delay = Math.random() * 3;
+            
+            confetti.style.cssText = `
+                --color: ${color};
+                --opacity: ${opacity};
+                --rotation: ${rotation}deg;
+                left: ${Math.random() * 100}%;
+                animation: confettiFall ${2 + Math.random() * 2}s linear ${delay}s forwards;
+            `;
+            
+            problemStatementCard.appendChild(confetti);
+            
+            // Remove confetti after animation
+            setTimeout(() => confetti.remove(), 5000 + delay * 1000);
+        }
+    }
+
+    // Function to reveal winners
+    function revealWinners(problemStatementCard) {
+        const winners = problemStatementCard.querySelectorAll('.winner-card');
+        winners.forEach(winner => {
+            if (winner.classList.contains('third')) {
+                setTimeout(() => {
+                    winner.classList.add('revealed');
+                }, 2000);
+            }
+            if (winner.classList.contains('second')) {
+                setTimeout(() => {
+                    winner.classList.add('revealed');
+                }, 2000);
+            }
+            if (winner.classList.contains('first')) {
+                setTimeout(() => {
+                    winner.classList.add('revealed');
+                    createConfetti(problemStatementCard);
+                }, 2000);
+            }
+        });
+    }
+
+    // Intersection Observer for triggering animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                entry.target.classList.add('animated');
+                revealWinners(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    // Observe each problem statement card
+    document.querySelectorAll('.ps-card').forEach(card => {
+        observer.observe(card);
+    });
+});

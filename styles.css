@@ -1581,6 +1581,43 @@ textarea:valid ~ label {
     transform: translateX(5px);
 }
 
+/* Add these styles to your existing CSS */
+.contact-link {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.contact-link:hover::before {
+    left: 100%;
+}
+
+.phone-link:active {
+    transform: scale(0.98);
+    background: rgba(255, 51, 102, 0.3);
+}
+
+.email-link:active {
+    transform: scale(0.98);
+    background: rgba(255, 51, 255, 0.3);
+}
+
 /* Card Appearance Animation */
 @keyframes cardReveal {
     from {
@@ -3007,3 +3044,223 @@ textarea:valid ~ label {
     }
 }
 
+/* Results Section Styles */
+/* Updated Results Section Styles */
+.results-section {
+    padding: 4rem 0;
+    background: rgba(13, 12, 24, 0.95);
+    border-radius: 20px;
+    margin: 2rem auto;
+    max-width: 1200px;
+    overflow: hidden; /* Add this to contain the borders */
+    position: relative; /* For confetti positioning */
+}
+
+.winner-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    box-sizing: border-box; /* Add this to include border in width calculation */
+    width: 100%; /* Ensure card takes full width */
+    margin: 0 auto; /* Center the card */
+}
+
+/* Reveal Animations */
+@keyframes revealCard {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Individual card animations */
+.winner-card.third.revealed {
+    animation: revealCard 0.5s ease forwards;
+}
+
+.winner-card.second.revealed {
+    animation: revealCard 0.5s ease forwards;
+    animation-delay: 1s;
+}
+
+.winner-card.first.revealed {
+    animation: revealCard 0.5s ease forwards;
+    animation-delay: 2s;
+}
+
+/* Confetti Styles */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color);
+    opacity: var(--opacity);
+    transform: rotate(var(--rotation));
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+.problem-statement-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 0 2rem;
+}
+
+.ps-card {
+    background: rgba(88, 43, 255, 0.05);
+    border: 2px solid rgba(88, 43, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.ps-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.ps-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #582BFF, #D853FF);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.ps-header h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.winners-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.winner-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.winner-card:hover {
+    transform: translateY(-5px);
+}
+
+.winner-card.first {
+    border: 2px solid #FFD700;
+}
+
+.winner-card.second {
+    border: 2px solid #C0C0C0;
+}
+
+.winner-card.third {
+    border: 2px solid #CD7F32;
+}
+
+.winner-position {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 1.5rem;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    min-width: 100px;
+}
+
+.winner-position i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.winner-position i.fa-trophy {
+    color: #FFD700;
+}
+
+.winner-card.second .winner-position i {
+    color: #C0C0C0;
+}
+
+.winner-card.third .winner-position i {
+    color: #CD7F32;
+}
+
+.winner-details {
+    padding-left: 1.5rem;
+    flex-grow: 1;
+}
+
+.winner-details h4 {
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.team-members {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.team-members i {
+    margin-right: 0.5rem;
+}
+
+.prize-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #582BFF, #D853FF);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .problem-statement-cards {
+        padding: 0 1rem;
+    }
+
+    .winner-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .winner-position {
+        border-right: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        padding: 0 0 1rem 0;
+        margin-bottom: 1rem;
+    }
+
+    .winner-details {
+        padding-left: 0;
+    }
+}
